@@ -19,13 +19,24 @@ This repository features a diverse collection of Nonlinear Programming (NLP) pro
 
 
 ### 1. Problem Description
-This case addresses the Hydrogen Management Problem in a petroleum refinery. The network is modeled as a Superstructure that interconnects multiple hydrogen sources (SMR, CCR), consumption sinks (HCU, DHT, etc.), and purification units (PSA).
-
-The core complexity arises from the mixing of streams with different concentrations, which generates bilinear terms ($\text{Flow Rate} \times \text{Purity}$). This makes the problem an NLP model where the actual inlet purity of each unit is a variable determined by the optimized blend.
+This case addresses the Hydrogen Management Problem in a petroleum refinery, focusing on the efficient allocation of hydrogen resources to maximize profitability and operational efficiency. The refinery hydrogen network is modeled as a Superstructure that interconnects multiple functional entities:
+* **Hydrogen Sources:** These include high-purity, high-cost external or fresh sources like the Steam Methane Reformer, and internal by-product sources such as Continuous Catalytic Reformers (CCR1, CCR2).
+* **Hydrogen Sinks:** Processing units such as the Hydrocracker (HCU), Diesel Hydrotreater (DHT), Naphtha Hydrotreater (NHT), and Gasoline Hydrotreater (GHT). These units require specific hydrogen volumes and must maintain a minimum inlet purity threshold to protect catalyst activity and ensure proper partial pressures.
+* **Purification Units:** A Pressure Swing Adsorption (PSA) unit acts as a source-sink intermediary. It captures low-purity "off-gas" from unit outlets and upgrades it to high-purity hydrogen at a 90% recovery rate.
+* **Reuse and Recycle:** The superstructure allows for direct recycling of off-gas from high-purity/high-pressure sinks to lower-requirement units. Any excess gas is sent to the refinery's fuel gas system as waste.
+  
+The core mathematical complexity of this system is its classification as a Nonlinear Programming (NLP) model. This arises from the mixing of various streams with different concentrations, which generates bilinear terms ($\text{Flow Rate} \times \text{Purity}$) in the component mass balances. This nonlinearity creates a non-convex optimization space where multiple local optima may exist.
 
 ### 2. Optimization Goals
-* **Minimize the TAC:** The objective function focuses on reducing the expenses associated with purchasing or producing high-purity fresh hydrogen (e.g., from an SMR unit).
+* **Minimize the TAC:** The objective function focuses on reducing the expenses associated with purchasing or producing high-purity fresh hydrogen.
 * **Maximize Hydrogen Reuse:** Strategically recycle "off-gas" from high-purity sinks to lower-requirement units or purification units to minimize waste.
+
+### 3. Key Constraints
+* **Sink Inlet Flow Balance:** The model enforces a bulk volume balance for each tank.
+* **Bilinear Component Balance:** Property mass balances ensure the sulfur and gravity levels in tanks reflect physical blending.
+* **Purity Hard Constraint:** The actual mixed purity at the inlet of each processing unit must be greater than or equal to its minimum specified threshold to ensure process integrity.
+* **PSA Performance Model:** The purified hydrogen output is constrained by a fixed recovery rate, where the pure hydrogen produced is proportional to the total hydrogen entering the unit from all source and sink feeds.
+* **Capacity Limits:** The total hydrogen drawn from any production unit (SMR or CCR) for both direct sink supply and PSA feed must not exceed its maximum operating capacity.
 
 ---
 
