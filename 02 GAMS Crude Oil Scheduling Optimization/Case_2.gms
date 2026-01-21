@@ -3,7 +3,7 @@ $Ontext
 SYSTEM OVERVIEW:
 This model addresses the operational optimization of a simplified industrial-scale refinery scheduling system.
 
-SCENARIO OVERVIEW:
+PROBLEM:
 1. Time Horizon: 
    - $10$ Days ($T1$–$T10$), with each day representing a decision period.
 
@@ -218,3 +218,4 @@ Parameter Report_CDU_Feed(T, CDU, Tank);
 Report_CDU_Feed(T, CDU, Tank) = F_Feed.l(T, Tank, CDU);
 
 Display Report_CDU_Feed;
+
