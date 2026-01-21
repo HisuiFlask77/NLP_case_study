@@ -6,7 +6,7 @@ This repository features a diverse collection of Nonlinear Programming (NLP) pro
 * [Case 1: Refinery Hydrogen Network Optimization](#case-1-refinery-hydrogen-network-optimization)
 * [Case 2: Multi-Period Refinery Crude Oil Scheduling Optimization](#case-2-multi-period-refinery-crude-oil-scheduling-optimization)
 * [Case 3: Steady-State Two-Column Crude Distillation and Product Blending Optimization](#case-3-steady-state-two-column-crude-distillation-and-product-blending-optimization)
-* [Case 4: 4-step PSA carbon capture](#case-4)
+* [Case 4: 4-step PSA carbon capture Optimization](#case-4-4-step-psa-carbon-capture-optimization)
 * [Case 5: Newton's Cradle Dynamic Simulation](#case-5-newtons-cradle-dynamic-simulation)
 * [Case 6: Refinery Production Planning](#case-6-refinery-production-planning)
 * [Case 7: Gasoline Blending and Pooling](#case-7-gasoline-blending-and-pooling)
@@ -72,6 +72,18 @@ The process discretizes crude oil into "narrow cuts" to track boiling point rang
 * **Product Quality Specifications**: Final products (Gasoline, Jet Fuel, Diesel, and Fuel Oil) must satisfy strict environmental and performance standards, specifically **Maximum Sulfur content** and **Minimum API Gravity**.
 * **Fraction Allocation Logic**: Enforce topological constraints to ensure that narrow cuts are routed correctly based on the optimized split variables and boiling point hierarchies.
 * **Bilinear Blending Equations**: Ensure that the flow and property balances are satisfied when mixing intermediate streams into final product pools.
+
+---
+
+## Case 4: 4-step PSA carbon capture Optimization
+
+### 1.Problem: Optimization of a four-step PVSA cycle (pressurization, adsorption, blowdown, evacuation) for $CO_2/N_2$ separation, characterized by high nonlinearity, stiffness, and the requirement for cyclic steady-state (CSS) convergence.
+
+### 2.Goal: Minimize the $CO_2$ capture cost ($\$/tonCO_2$) by optimizing step durations, operating pressures ($P_H, P_I, P_L$), and feed velocities.
+
+### 3.Constraints: Stringent product requirements ($CO_2$ purity $\ge 95\%$, recovery $\ge 90\%$), logical pressure ordering, and adsorbent material capacity limits.
+
+* **Reference:** Model based on Hybrid data-driven optimisation approach for pressure swing adsorption," *Separation and Purification Technology* (2026).
 
 ---
 
