@@ -77,11 +77,14 @@ The process discretizes crude oil into "narrow cuts" to track boiling point rang
 
 ## Case 4: 4-step PSA carbon capture Optimization
 
-### 1.Problem: Optimization of a four-step PVSA cycle (pressurization, adsorption, blowdown, evacuation) for $CO_2/N_2$ separation, characterized by high nonlinearity, stiffness, and the requirement for cyclic steady-state (CSS) convergence.
+### 1.Problem Description
+This case addresses the optimal design of a four-step Vacuum Pressure Swing Adsorption (PVSA) cycle—comprising feed pressurization, high-pressure adsorption, blowdown, and evacuation—for $CO_2/N_2$ separation. The underlying physics are governed by a system of coupled Partial Differential-Algebraic Equations (PDAEs) describing mass, momentum, and energy balances. A critical challenge is achieving Cyclic Steady State (CSS), where the final state of a cycle must match the initial state, rendering traditional steady-state solvers inapplicable. The high nonlinearity and stiffness of the rigorous models make direct optimization computationally prohibitive.
 
-### 2.Goal: Minimize the $CO_2$ capture cost ($\$/tonCO_2$) by optimizing step durations, operating pressures ($P_H, P_I, P_L$), and feed velocities.
+### 2.Optimization Goals
+Minimize the $CO_2$ capture cost ($\$/tonCO_2$) by optimizing step durations, operating pressures ($P_H, P_I, P_L$), and feed velocities.
 
-### 3.Constraints: Stringent product requirements ($CO_2$ purity $\ge 95\%$, recovery $\ge 90\%$), logical pressure ordering, and adsorbent material capacity limits.
+### 3.Key Constraints
+Stringent product requirements ($CO_2$ purity $\ge 95\%$, recovery $\ge 90\%$), logical pressure ordering, and adsorbent material capacity limits.
 
 * **Reference:** Model based on Hybrid data-driven optimisation approach for pressure swing adsorption," *Separation and Purification Technology* (2026).
 
