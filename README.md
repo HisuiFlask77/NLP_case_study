@@ -17,7 +17,6 @@ This repository features a diverse collection of Nonlinear Programming (NLP) pro
 ## Case 1: Refinery Hydrogen Network Optimization
 
 
-
 ### 1. Problem Description
 This case addresses the Hydrogen Management Problem in a petroleum refinery, focusing on the efficient allocation of hydrogen resources to maximize profitability and operational efficiency. The refinery hydrogen network is modeled as a Superstructure that interconnects multiple functional entities:
 * **Hydrogen Sources:** These include high-purity, high-cost external or fresh sources like the Steam Methane Reformer, and internal by-product sources such as Continuous Catalytic Reformers (CCR1, CCR2).
@@ -43,7 +42,6 @@ The core mathematical complexity of this system is its classification as a Nonli
 ## Case 2: Multi-Period Refinery Crude Oil Scheduling Optimization
 
 
-
 ### 1. Problem Description
 This case addresses the industrial-scale scheduling of crude oil operations over a 10-day time horizon. The system manages three categories of crude oil—Arabian Light (AL), Arabian Heavy (AH), and Bonny Light (BL)—arriving via vessels on specific scheduled dates. These feedstocks are unloaded into four storage tanks (TK101–TK104) where non-linear blending occurs before being processed by two Crude Distillation Units, CDU_A and CDU_B.
 
@@ -62,7 +60,6 @@ The core mathematical challenge is the Dynamic Tank Quality Balance4. The model 
 ---
 
 ## Case 3: Steady-State Two-Column Crude Distillation and Product Blending Optimization
-
 
 
 ### 1. Problem Description
@@ -86,7 +83,6 @@ To achieve high accuracy, the model discretizes crude oil into eight "narrow cut
 ---
 
 ## Case 4: 4-Step PSA Carbon Capture Optimization
-
 
 
 ### 1. Problem Description
@@ -140,6 +136,7 @@ $$F_{\text{contact}} = \max(0, k \cdot (2r - \text{distance}))$$
 
 ## Case 6: Refinery Production Planning
 
+
 ### 1. Problem Description
 This case is a refinery production planning problem. The model is designed to determine the optimal balance between raw material selection and operational settings to maximize economic returns. It considers two types of feedstock—Light Crude and Heavy Crude—which are processed through a Crude Distillation Unit (CDU) and a FCC unit.
 
@@ -176,6 +173,7 @@ $$
 
 ## Case 7: Gasoline Blending and Pooling
 
+
 ### 1. Key Technical Challenges
 This case addresses a NLP case study: the Multi-period Gasoline Blending and Pooling Problem.
 
@@ -201,16 +199,47 @@ The optimization is conducted over three time periods. The mathematical complexi
 ## Case 8: Industrial FCC Unit Optimization (6-Lump Kinetic Model)
 
 
+### 1. Problem Description
+This case models and optimizes an industrial FCC unit based on the Abadan Refinery configuration. The system utilizes a 6-Lump kinetic network (Vacuum Gas Oil, Diesel, Gasoline, LPG, Dry Gas, and Coke) to simulate the complex chemical transformations and heat integration within the refinery's core conversion unit.
 
-### 1. System Architecture
-* **Riser Reactor:** Modeled as a PFR (Plug Flow Reactor) for endothermic cracking.
-* **Regenerator:** Modeled as a CSTR (Continuous Stirred-Tank Reactor) for catalyst regeneration.
+The model architecture captures the coupled dynamics of two distinct reactors:
+* **Pool Mass Balance:** Modeled as a PFR using DAEs. Heavy VGO is cracked into lighter products through a series of 15 endothermic reactions.
+* **Regenerator:** Modeled as a CSTR. This unit burns off coke deposited on the catalyst to restore its activity and provides the thermal energy required for the riser reactions.
 
-### 2. Mathematical & Kinetic Model
-The system uses the Arrhenius equation for 15 reaction networks:
-$$k_i = k_{i,0} \cdot \exp\left(-\frac{E_{a,i}}{R \cdot T_{\text{riser}}}\right)$$
+The simulation accounts for catalyst deactivation kinetics, where the catalyst activity ($\Phi$) decreases as it travels up the riser due to coke formation.
 
-**Catalyst Deactivation:**
-$$\frac{d\Phi}{dz} = -2.0 \cdot \Phi \cdot y_{\text{coke}} \cdot \text{Tau}$$
+### 2. Optimization Goals
+* **Maximize Gasoline Yield:** The primary objective is to maximize the mass fraction of Gasoline ($y_{\text{GAS}}$) at the riser outlet.
+* **System Stability:** The optimizer uses a penalty function to drive energy and combustion balance slacks to zero, ensuring the resulting operating point is physically and industrially feasible.
 
-* **Reference:** Model based on "Comprehensive Kinetic Modeling and Sensitivity Analysis of Industrial Fluid Catalytic Cracking (FCC) Unit," *Arabian Journal for Science and Engineering* (2025).
+### 3. Key Constraints
+* **Riser Mass and Energy Balances:** A system of DAEs governs the change in mass fractions and temperature ($T_{\text{riser}}$) along the dimensionless height ($z$) of the riser:
+
+$$
+\frac{dy_j}{dz} = \text{NetRate}_j \cdot \tau
+$$
+$$
+\frac{dT_{\text{riser}}}{dz} = \frac{\text{HeatOfReaction} \cdot \text{Rate}_{\text{net}}}{C_{p, \text{mix}}} \cdot \tau
+$$
+
+* **Catalyst Deactivation Kinetics:** The activity of the catalyst is modeled to decay based on the local coke concentration:
+
+$$
+\frac{d\Phi}{dz} = -2.0 \cdot \Phi \cdot y_{\text{coke}} \cdot \tau
+$$
+
+* **Regenerator Heat Balance:** The energy generated by burning coke must balance the energy required to heat the circulating catalyst back to the regeneration temperature ($T_{\text{regen}}$):
+
+$$
+H_{\text{cat,in}} + H_{\text{gen}} = H_{\text{cat,out}}
+$$
+
+* **Kinetic Temperature Dependency:** All 15 reaction rates follow the Arrhenius equation:
+
+$$
+k_i = k_{i,0} \cdot \exp\left(-\frac{E_{a,i}}{R \cdot T_{\text{riser}}}\right)
+$$
+
+
+**Reference:** Model based on "Comprehensive Kinetic Modeling and Sensitivity Analysis of Industrial Fluid Catalytic Cracking (FCC) Unit," *Arabian Journal for Science and Engineering* (2025).
+DOI: 10.1007/s13369-025-10412-6
