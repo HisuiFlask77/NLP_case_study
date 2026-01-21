@@ -90,24 +90,51 @@ To achieve high accuracy, the model discretizes crude oil into eight "narrow cut
 
 
 ### 1. Problem Description
-This case addresses the optimal design of a four-step Vacuum Pressure Swing Adsorption (PVSA) cycle for $CO_2/N_2$ separation. The physics are governed by a system of coupled Partial Differential-Algebraic Equations (PDAEs).
+This case addresses the optimal design of a four-step Vacuum Pressure Swing Adsorption (PVSA) cycle for carbon capture1111. The process is designed to separate a $CO_2/N_2$ mixture (containing 15% $CO_2$) into a high-purity $CO_2$ product2. The cycle consists of four fundamental steps: feed pressurization, high-pressure adsorption, cocurrent blowdown, and countercurrent evacuation.
+
+The primary technical challenges include:
+* **Highly Nonlinear PDAEs**: The system is governed by a set of coupled Partial Differential-Algebraic Equations (PDAEs) describing mass, momentum, and energy balances.
+* **Cyclic Steady State (CSS)**: Unlike traditional steady states, CSS requires the final state of an adsorption cycle to exactly match the initial state, necessitating hundreds of simulation cycles for convergence.
+* **Rigorous Model Complexity**: Direct optimization of rigorous models is computationally prohibitive due to inherent nonlinearity and stiffness.
 
 ### 2. Optimization Goals
 * **Minimize Capture Cost:** Minimize the $CO_2$ capture cost (\$/ton $CO_2$) by optimizing step durations and operating pressures ($P_H, P_I, P_L$).
 
-* **Reference:** Model based on "Hybrid data-driven optimisation approach for pressure swing adsorption," *Separation and Purification Technology* (2026).
+### 3. Key Constraints
+* **Product Requirements:** The $CO_2$ product must meet a minimum purity of 95% and a recovery rate of at least 90%.
+* **Logical Pressure Ordering**
+* **Operational Boundaries** 
+
+**Reference:** Model based on "Hybrid data-driven optimisation approach for pressure swing adsorption," *Separation and Purification Technology* (2026).
+DOI: 10.1016/j.seppur.2025.136228.
 
 ---
 
 ## Case 5: Newton's Cradle Dynamic Simulation
 
 
-### 1. Physical & Mathematical Model
-The system is governed by Newton's Second Law, treating collisions as a "stiff" physical process governed by DAEs.
+### 1. Problem Description
+This case focuses on the dynamic modeling of a multi-body collision system—specifically a Newton's Cradle consisting of three identical balls ('b1', 'b2', 'b3'). Unlike simple kinematic animations, this simulation treats collisions as a "stiff" physical process where the balls undergo microscopic deformation during contact.
 
-* **Kinematics:** $\frac{dx_i}{dt} = v_i$
-* **Dynamics:** $m \frac{dv_i}{dt} = \sum F_{\text{contact}}$
-* **Contact Force Model:** $F = \max(0, k \cdot (2r - \text{distance}))$
+The simulation begins with Ball 1 located at $x = -1.0$ moving right at $5.0\text{ m/s}$, while Ball 2 and Ball 3 are stationary at $x = 0.0$ and $x = 1.0$, respectively. The goal is to capture the transfer of momentum through the chain of spheres.
+
+### 2. Physical & Mathematical Model
+The system is governed by Newton's Second Law and modeled as a system of DAEs:
+* **Kinematics:** The change in position over time is defined by velocity:
+  
+$$
+\frac{dx_i}{dt} = v_i
+$$
+
+* **Dynamics:** The acceleration of each ball is determined by the sum of contact forces:
+
+$$
+m \frac{dv_i}{dt} = \sum F_{\text{contact}}
+$$
+
+* **Contact Force Model:** Collisions are simulated using a high-stiffness spring interaction ($k = 200.0$). A repulsive force is generated only when the distance between two balls is less than the sum of their radii ($2r$):
+
+$$F_{\text{contact}} = \max(0, k \cdot (2r - \text{distance}))$$
 
 ---
 
