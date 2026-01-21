@@ -1,20 +1,37 @@
 $Title Steady-State Two-Column Crude Distillation and Product Blending Optimization
 $Ontext
-This is a refinery process optimization model.
-Unlike scheduling models, this does not involve time periods; instead, it 
-focuses on optimizing steady-state operational conditions.
+SYSTEM OVERVIEW:
+This is a refinery process optimization model. Unlike scheduling models, this does not involve time periods; instead, it focuses on optimizing steady-state operational conditions.
 
+PROBLEM DESCRIPTION:
+The primary objective of this model is to determine the optimal steady-state operating parameters that maximize the refinery's total economic margin.
+
+1. Objective Function:
+   - Maximize Total Profit ($Z$), defined as the difference between the revenue from final product sales and the total costs (crude purchase and utility consumption).
+
+2. Decision Variables:
+   - Crude selection and blending ratios.
+   - Distillation unit throughput and temperature-based cut points ($E$-Cutpoint Correlations).
+   - Intermediate stream routing to blending pools.
+
+3. Key Constraints and Nonlinearities:
+   - Rigorous mass balances across all units, involving bilinear terms ($\text{Flow} \times \text{Property}$) for quality tracking in blending operations.
+   - Nonlinear yield predictions where product fractions are calculated as continuous functions of fractionation temperatures.
+   - Product quality specifications that must remain within predefined market limits.
 
 PROCESS FLOW:
-1. Crude Blending: 3 types of crude oil are mixed and fed into the Atmospheric Distillation Unit (ADU).
-2. Atmospheric Distillation (ADU): Separates crude into Naphtha, Kerosene, Diesel, and Atmospheric Residue (AR).
-   - Key optimization variables: Draw-off cut points, which determine the routing of "Swing Cuts."
-3. Vacuum Distillation (VDU): Receives AR from the ADU bottom and further separates it into LVGO, HVGO, and Vacuum Residue (VR).
-4. Product Blending: All intermediate streams are sent to blending pools to produce final products.
+1. Crude Blending: 
+   - $3$ types of crude oil are mixed and fed into the Atmospheric Distillation Unit (ADU).
 
-NON-LINEAR CORE:
-- Distillation yields are a function of cut point temperatures (E-Cutpoint Correlation).
-- Mass conservation during blending (Flow * Property bilinear terms).
+2. Atmospheric Distillation (ADU): 
+   - Separates crude into Naphtha, Kerosene, Diesel, and Atmospheric Residue ($AR$).
+   - Key optimization variables: Draw-off cut points, which determine the routing of "Swing Cuts."
+
+3. Vacuum Distillation (VDU): 
+   - Receives $AR$ from the ADU bottom and further separates it into $LVGO$, $HVGO$, and Vacuum Residue ($VR$).
+
+4. Product Blending: 
+   - All intermediate streams are sent to blending pools to produce final products.
 
 $Offtext
 
@@ -221,4 +238,5 @@ Solve Refinery_Process using NLP maximizing Profit;
 Parameter Report_Splits;
 Report_Splits('Split_Nap_Kero') = Split_NK.l;
 Report_Splits('Split_Kero_Diesel') = Split_KD.l;
+
 Display Report_Splits, Prod_Qual.l, F_Crude.l;
