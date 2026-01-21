@@ -9,11 +9,11 @@ The network is modeled as a Superstructure, where multiple sources, sinks,
 and purification units are interconnected:
 
 1. Hydrogen Sources (Supply):
-   - External/Fresh Sources (e.g., SMR): High purity, high marginal cost.
-   - Internal By-product Sources (e.g., CCR): Purity depends on unit operation.
+   - External/Fresh Sources: High purity, high marginal cost.
+   - Internal By-product Sources: Purity depends on unit operation.
 
 2. Hydrogen Sinks (Demand):
-   - Processing units (HCU, DHT, etc.) require a specific total volume of 
+   - Processing units  require a specific total volume of 
      hydrogen and a minimum threshold of purity at the inlet to maintain 
      catalyst activity and partial pressure requirements.
 
@@ -201,4 +201,5 @@ Display Purity_Check;
 * Generate flow matrix report for easier visualization of reuse patterns
 Parameter Network_Matrix(sink_out, sink_in);
 Network_Matrix(sink_out, sink_in) = F_Sk_Sk.l(sink_out, sink_in);
+
 Display Network_Matrix;
