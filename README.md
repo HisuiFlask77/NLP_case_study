@@ -45,13 +45,19 @@ The core mathematical complexity of this system is its classification as a Nonli
 
 
 ### 1. Problem Description
-This case addresses the industrial-scale scheduling of crude oil operations over a 10-day time horizon. The system manages three categories of crude oil—Arabian Light (AL), Arabian Heavy (AH), and Bonny Light (BL). Feedstocks are unloaded into four storage tanks where non-linear blending occurs before being processed by two Crude Distillation Units (CDU).
+This case addresses the industrial-scale scheduling of crude oil operations over a 10-day time horizon. The system manages three categories of crude oil—Arabian Light (AL), Arabian Heavy (AH), and Bonny Light (BL)—arriving via vessels on specific scheduled dates. These feedstocks are unloaded into four storage tanks (TK101–TK104) where non-linear blending occurs before being processed by two Crude Distillation Units, CDU_A and CDU_B.
 
-The core mathematical challenge is the Dynamic Tank Quality Balance. The model tracks quality attributes (Sulfur and API Gravity) using bilinear terms ($\text{Volume} \times \text{Quality}$), creating a non-convex NLP space.
+The core mathematical challenge is the Dynamic Tank Quality Balance4. The model tracks critical quality attributes—Sulfur Content and API Gravity—using bilinear terms (Volume $\times$ Quality), creating a non-convex NLP space.
 
-### 2. Key Constraints
+### 2. Optimization Goals
+* **Maximize Total Net Profit:** The objective is to maximize profit, calculated as the gross product revenue minus crude procurement costs.
+* **Quality-Driven Revenue:** Product value is estimated as a function of the feed quality; the optimizer seeks to maximize the API Gravity premium while minimizing Sulfur penalties.
+
+### 3. Key Constraints
 * **Material and Inventory Balances:** The model enforces a bulk volume balance for each tank: $V_{t} = V_{t-1} + \text{In} - \text{Out}$.
-* **Nonlinear Quality Mixing:** Property mass balances ensure the sulfur and gravity levels in tanks reflect physical blending.
+* **Nonlinear Quality Mixing:** Property mass balances ensure that the sulfur and gravity levels in the tanks and CDU feeds accurately reflect the physical blending of different crude types.
+* **Unloading Allocation:** All scheduled vessel arrivals must be fully unloaded and allocated to available storage tanks.
+* **CDU Capacity Limits:** Each distillation unit must operate between its minimum turndown rate and its maximum daily processing capacity.
 
 ---
 
