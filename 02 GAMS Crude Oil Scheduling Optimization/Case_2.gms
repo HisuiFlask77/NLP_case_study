@@ -1,19 +1,34 @@
 $Title Multi-Period Refinery Crude Oil Scheduling Optimization
 $Ontext
-This is a simplified industrial-scale refinery scheduling model.
-
+SYSTEM OVERVIEW:
+This model addresses the operational optimization of a simplified industrial-scale refinery scheduling system.
 
 SCENARIO OVERVIEW:
-1. Time Horizon: 10 Days (T1-T10), with each day representing a decision period.
-2. Feedstock: 3 types of crude oil (Arabian Light, Heavy, Bonny) arriving via vessels on specific dates.
-3. Storage: 4 crude mixing tanks where non-linear blending occurs.
-4. Processing: 2 Crude Distillation Units (CDU) with varying capacities and yield profiles.
-5. Objective: Maximize total profit (Product Value - Crude Cost - Inventory Holding Cost - Switching Costs).
+1. Time Horizon: 
+   - $10$ Days ($T1$–$T10$), with each day representing a decision period.
 
+2. Feedstock: 
+   - $3$ types of crude oil (Arabian Light, Heavy, Bonny) arriving via vessels on specific dates.
 
+3. Storage: 
+   - $4$ crude mixing tanks where non-linear blending occurs.
+
+4. Processing: 
+   - $2$ Crude Distillation Units (CDU) with varying capacities and yield profiles.
+
+5. Objective: 
+   - Maximize total profit ($Z$), defined as:
+     $Z = \text{Product Value} - \text{Crude Cost} - \text{Inventory Holding Cost} - \text{Switching Costs}$
+
+MATHEMATICAL CHARACTERISTICS:
 Dynamic Tank Quality Balance:
-V(t) * C(t) = V(t-1) * C(t-1) + Sum(F_in * C_in) - Sum(F_out * C(t))
+The quality tracking in storage tanks is governed by the following mass balance:
+$$V(t) \cdot C(t) = V(t-1) \cdot C(t-1) + \sum (F_{\text{in}} \cdot C_{\text{in}}) - \sum (F_{\text{out}} \cdot C(t))$$
 
+Where:
+- $V(t)$: Volume at time $t$.
+- $C(t)$: Concentration/Quality at time $t$.
+- $F$: Flow rates.
 $Offtext
 
 * -----------------------------------------------------------------------------
@@ -201,4 +216,5 @@ Display Report_Tank_Sulfur;
 
 Parameter Report_CDU_Feed(T, CDU, Tank);
 Report_CDU_Feed(T, CDU, Tank) = F_Feed.l(T, Tank, CDU);
+
 Display Report_CDU_Feed;
