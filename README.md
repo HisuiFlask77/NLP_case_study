@@ -140,9 +140,37 @@ $$F_{\text{contact}} = \max(0, k \cdot (2r - \text{distance}))$$
 
 ## Case 6: Refinery Production Planning
 
-### 1. Nonlinear Features
-* **Nonlinear Yields:** Gasoline output is a quadratic function of temperature and feedstock API gravity.
-* **Variable Operating Costs:** Utility costs are modeled as an increasing function of the operating temperature: $\text{OpCosts}(T)$.
+### 1. Problem Description
+This case is a refinery production planning problem. The model is designed to determine the optimal balance between raw material selection and operational settings to maximize economic returns. It considers two types of feedstock—Light Crude and Heavy Crude—which are processed through a Crude Distillation Unit (CDU) and a FCC unit.
+
+A unique feature of this model is the inclusion of the CDU operating temperature ($T$) as a decision variable. Because the temperature directly influences the chemical yields of high-value products and the consumption of utilities, the model must navigate a non-convex space to find the most profitable operating point.
+
+### 2. Optimization Goals
+* **Maximize Daily Profit:** The objective is to maximize the total daily profit ($Z$), calculated as the gross revenue from product sales minus the costs of crude oil and nonlinear operational expenses.
+
+$$
+Z = \sum_{p \in \text{Products}} (\text{Output}_p \cdot \text{Price}_p) - \sum_{c \in \text{Crudes}} (\text{Feed}_c \cdot \text{Price}_c) - \text{Cost}_{\text{op}}
+$$
+
+*  **Optimize Yield Efficiency:** Balance the CDU temperature to maximize the yield of expensive products like Gasoline, while accounting for the increased utility costs associated with higher temperatures.
+* **Material Selection:** Determine the optimal mix of Light and Heavy crudes based on their API gravity and purchase price.
+
+### 3. Key Constraints
+* **Nonlinear Gasoline Yield:** The gasoline output is a quadratic function of the CDU temperature and a linear function of the weighted average API gravity of the feed:
+
+$$
+\text{Output}_{\text{Gasoline}} = Q_{\text{CDU}} \cdot (-0.000005 \cdot T^2 + 0.004 \cdot T + 0.005 \cdot API_{\text{avg}} - 0.5)
+$$
+
+* **Linear Product Yields** Yields for Diesel, Jet Fuel, and Fuel Oil are modeled as fixed percentages (35%, 15%, and 10% respectively) of the total CDU throughput.
+* **Operational Cost Function** Costs increase linearly with throughput and rise further as the temperature deviates from the base level of $300\text{ °F}$:
+
+$$
+\text{Cost}_{\text{op}} = Q_{\text{CDU}} \cdot 2.0 + (T - 300) \cdot 0.05
+$$
+
+* **Capacity and Bounds**
+
 
 ---
 
