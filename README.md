@@ -177,20 +177,24 @@ $$
 ## Case 7: Gasoline Blending and Pooling
 
 ### 1. Key Technical Challenges
-The primary complexity arises from Bilinearity:
-* **Pool Quality Balance:**
+This case addresses a NLP case study: the Multi-period Gasoline Blending and Pooling Problem.
 
-$$
-\sum_{i \in I} (f_{ip,t} \cdot \text{InputQuality}_{i,q}) = q_{p,q,t} \cdot \sum_{i \in I} f_{ip,t}
-$$
+The model represents a three-layer production network:
+* **Feedstock Components:** Raw materials (Alkylate, Reformate, and FCC Naphtha) with known qualities, specifically Octane (RON) and Sulfur content. Each component has a specific purchase cost.
+* **Intermediate Pools:** Components are first mixed into storage tanks (Pool 1 and Pool 2). The resulting qualities of these pools are initially unknown variables that depend on the specific blend ratio of the inputs.
+* **Final Products:** Fluids are drawn from the intermediate pools to produce final gasoline grades: Premium and Regular.
+
+The optimization is conducted over three time periods. The mathematical complexity arises from Bilinearity, where the product of flow rates and unknown pool qualities creates a non-convex optimization space.
 
 
-### 2. Component Data
-| Component | RON (Octane) | Sulfur (ppm) | Cost ($/bbl) |
-| :--- | :--- | :--- | :--- |
-| **Alkylate** | 98 | 5 | 90 |
-| **Reformate** | 102 | 10 | 85 |
-| **FCC Naphtha** | 92 | 50 | 70 |
+### 2. Optimization Goals
+* **Maximize Total Profit:** The primary objective is to maximize the total net profit across all periods, calculated as product sales revenue minus feedstock procurement costs.
+
+### 3. Key Constraints
+* **Pool Mass Balance:** The sum of the incoming component mass must equal the outgoing mass from the pool.
+* **Pool Volumetric Flow Balance:** For each pool and time period, the total volumetric inflow must equal the total volumetric outflow.
+* **Product Specification Constraints:** Blended final products must satisfy specific bounds. For Octane (RON), a minimum threshold is enforced and for contaminants like Sulfur, the concentration must remain below a maximum threshold.
+ 
 
 ---
 
