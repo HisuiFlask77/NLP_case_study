@@ -66,11 +66,22 @@ The core mathematical challenge is the Dynamic Tank Quality Balance4. The model 
 
 
 ### 1. Problem Description
-Optimizes fixed operating conditions for a two-column system: the Atmospheric Distillation Unit (ADU) and the Vacuum Distillation Unit (VDU). The process discretizes crude oil into "narrow cuts" to track boiling point ranges accurately.
+This case optimizes the steady-state operational conditions of a refinery’s primary distillation section. Unlike scheduling models, this simulation focuses on fixed processing parameters rather than time-period decisions. The system processes three types of crude oil (Arabian Light, Arabian Heavy, and Bonny Light) which are blended and fed into a two-column sequence:
+* **Atmospheric Distillation Unit (ADU):** Separates the crude blend into Naphtha, Kerosene, Diesel, and Atmospheric Residue (AR).
+* **Vacuum Distillation Unit (VDU):** Processes the heavy AR from the ADU bottom to further recover Vacuum Gas Oil (VGO) and Vacuum Residue.
 
-### 2. Key Constraints
-* **Product Quality Specifications:** Final products must satisfy strict standards: Maximum Sulfur content and Minimum API Gravity.
-* **Bilinear Blending Equations:** Ensure flow and property balances are satisfied when mixing intermediate streams into final product pools.
+To achieve high accuracy, the model discretizes crude oil into eight "narrow cuts" (pseudo-components) based on boiling point ranges. The non-linear core involves E-Cutpoint Correlations, where distillation yields are functions of cut-point temperatures, and Swing Cut decision variables (Split_NK and Split_KD) that determine how intermediate fractions are routed between adjacent product pools.
+
+### 2. Optimization Goals
+* **Maximize Total Net Profit:** The objective function seeks to maximize the difference between final product revenue and the combined costs of crude procurement and unit operating expenses.
+* **Optimal Fraction Routing:** Determine the optimal split ratios for swing cuts to divert intermediate streams to the most valuable product pools while meeting all quality standards.
+
+### 3. Key Constraints
+* **Unit Capacity Limits:** Total crude feed must remain within the ADU capacity (150 kbbl/day), and the heavy fractions sent to the VDU (VGO and Residue) must not exceed its processing limit.
+* **Bilinear Blending Equations:** Specific equations govern the routing of narrow cuts. For example, the Gasoline pool must consist of Light Naphtha and the optimized portion of the Naphtha/Kerosene swing cut.
+* **Product Quality Specifications:** Final products (Gasoline, Jet Fuel, Diesel, and Fuel Oil) must satisfy strict standards for Maximum Sulfur content and Minimum API Gravity.
+* **Bilinear Blending Equations:** Property mass balances ensure the final product quality accurately reflects the weighted average of the blended intermediate streams.
+
 
 ---
 
