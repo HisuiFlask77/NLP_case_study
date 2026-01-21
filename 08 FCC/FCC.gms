@@ -1,22 +1,38 @@
 $TITLE FCC Unit Optimization (6-Lump Model)
+$Ontext
+SYSTEM OVERVIEW:
+This model addresses the operational optimization of an industrial Fluid Catalytic Cracking (FCC) unit
+based on the Abadan Refinery configuration.
 
-* PROBLEM DESCRIPTION:
-* This GAMS model optimizes an industrial Fluid Catalytic Cracking unit 
-* based on the Abadan Refinery configuration. It uses a 6-Lump kinetic network 
-* (VGO, Diesel, Gasoline, LPG, Dry Gas, Coke). The riser is discretized using 
-* a Finite Difference scheme to solve for spatial profiles of mass fractions,
-* temperature, and catalyst activity.
-*
-* OBJECTIVE FUNCTION:
-* The primary objective is to maximize the Gasoline Yield at the riser outlet
-* while satisfying rigorous mass and energy balances across the reactor-regenerator
-* loop.
-*
-* REFERENCE:
-* Khaksar, S.A.N., Esmaeilzadeh, F., Farsi, M., et al. (2025). "Comprehensive 
-* Kinetic Modeling and Sensitivity Analysis of Industrial Fluid Catalytic Cracking
-* Unit: A Comparative Study of 5-Lump and 6-Lump Models." Arabian Journal for Science and Engineering, 50, 20943–20966. 
-* https://doi.org/10.1007/s13369-025-10412-6
+PROBLEM DESCRIPTION:
+The process is modeled as an integrated reactor-regenerator loop:
+
+1. Riser Reactor:
+   - Utilizes a 6-Lump kinetic network: Vacuum Gas Oil (VGO), Diesel (DSL), Gasoline (GAS), 
+     LPG, Dry Gas (DG), and Coke.
+   - The riser is discretized using a Finite Difference scheme to solve for spatial profiles of mass fractions, temperature, and catalyst activity.
+
+2. Regenerator:
+   - Modeled as a lumped steady-state system.
+   - Restores catalyst activity by burning off deposited coke and provides the necessary heat for the endothermic cracking reactions in the riser.
+
+3. Constraints:
+   - Rigorous mass and energy balances across the reactor-regenerator interface.
+   - Kinetic rate equations following Arrhenius law with specific reaction orders (2nd order for VGO, 1st order for others).
+
+MATHEMATICAL CHARACTERISTICS:
+- Model Type: NLP (Non-Linear Programming).
+- Core Complexity: 
+    - Highly non-linear kinetic expressions.
+    - Spatial discretization of ODEs.
+    - Tight coupling of energy balances between the riser inlet temperature and regenerator heat generation.
+- Objective: Maximize the Gasoline Yield (mass fraction) at the riser outlet (final grid point z_end).
+
+REFERENCE:
+Khaksar, S.A.N., Esmaeilzadeh, F., Farsi, M., et al. (2025). "Comprehensive Kinetic Modeling and Sensitivity Analysis of Industrial Fluid Catalytic Cracking 
+(FCC) Unit: A Comparative Study of 5-Lump and 6-Lump Models." Arabian Journal for Science and Engineering, 50, 20943–20966. 
+https://doi.org/10.1007/s13369-025-10412-6
+$Offtext
 
 
 SETS
@@ -144,4 +160,5 @@ obj_eqn.. obj =e= sum(z_end(z), y(z, 'GAS')) - 1000 * (sqr(slack_eb) + sqr(slack
 MODEL FCC_MOD /ALL/;
 OPTION NLP = CONOPT;
 SOLVE FCC_MOD MAXIMIZING obj USING NLP;
+
 DISPLAY y.l, T_riser.l, T_regen.l, F_cat.l, AirFlow.l;
