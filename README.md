@@ -1,4 +1,4 @@
-# Nonlinear Problem implementations: 8 Case Studies
+# Nonlinear Problem implementations: Case Studies
 
 This repository features a diverse collection of Nonlinear Programming (NLP) problem instances derived from complex industrial and physical engineering scenarios. The models are implemented using state-of-the-art optimization frameworks, including GAMS, Pyomo, and CasADi.
 
